@@ -1,0 +1,19 @@
+messages:
+  category: validation
+  description: アプリにて利用するバリデータのメッセージ
+  properties:
+    - description: 項目を選択していない場合に使用するメッセージ
+      key: com.skeleton.validation.constraints.NotSelected
+      value:
+        ja: "@@Fieldを選択してください。"
+        en: "Please select @@Field."
+    - description: 項目が未入力の場合使用するメッセージ
+      key: com.skeleton.validation.constraints.NotInputted
+      value:
+        ja: "@@Fieldを入力してください。"
+        en: "Please enter @@Field."
+    - description: 入力の最大数を超えた場合表示するメッセージ
+      key: com.skeleton.validation.constraints.OutOfMaxCharacterCount
+      value:
+        ja: "@@Fieldは{max}文字以内で入力してください。"
+        en: "@@Field must not exceed {max} characters."

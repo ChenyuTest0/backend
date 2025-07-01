@@ -1,0 +1,24 @@
+messages:
+  category: lib
+  description: 外部ライブラリが利用するメッセージ
+  properties:
+    - description: 必須項目が未入力の場合に応答するメッセージ。
+      key: jakarta.validation.constraints.NotNull.message
+      value:
+        ja: "@@Fieldは、必須項目です"
+        en: "@@Field is a required field."
+    - description: 必須項目が空白の場合に応答するメッセージ。
+      key: org.hibernate.validator.constraints.NotBlank.message
+      value:
+        ja: "@@Fieldは、必須項目です"
+        en: "@@Field is a required field."
+    - description: 入力文字数が指定範囲外の場合に応答するメッセージ。
+      key: org.hibernate.validator.constraints.Range.message
+      value:
+        ja: "@@Fieldの範囲は、{min}以上{max}以下でなければなりません"
+        en: "@@Field range must be between {min} and {max} inclusive."
+    - description: フィールドの値が不正な場合に応答するメッセージ。
+      key: typeMismatch
+      value:
+        ja: "@@Fieldの値が不正です。"
+        en: "The value of @@Field is invalid."

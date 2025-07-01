@@ -1,0 +1,17 @@
+// プロジェクト固有ライブラリ
+dependencies {
+  // プロジェクト共通ライブラリを使用するとそちらから伝播されるのでadditional.gradleで定義
+  // プロジェクト共通ライブラリを使用する場合は以下acts-core-server-lib-java17の定義はコメントアウトする
+  implementation 'com.accenture.acts:acts-core-server-lib-java17:0.9.1'
+
+  implementation 'org.postgresql:postgresql:42.7.6'
+  implementation 'net.logstash.logback:logstash-logback-encoder:8.1'
+
+  // SpringBootのバージョンを変えず脆弱性などでTomcatのみバージョン変更する場合は以下を使用する
+  // implementation "org.apache.tomcat.embed:tomcat-embed-websocket:$versions.tomcat"
+  // implementation "org.apache.tomcat.embed:tomcat-embed-el:$versions.tomcat"
+  // providedCompile "org.apache.tomcat.embed:tomcat-embed-websocket:$versions.tomcat"
+  // providedCompile "org.apache.tomcat.embed:tomcat-embed-el:$versions.tomcat"
+  // providedRuntime "org.apache.tomcat.embed:tomcat-embed-websocket:$versions.tomcat"
+  // providedRuntime "org.apache.tomcat.embed:tomcat-embed-el:$versions.tomcat"
+}

@@ -1,0 +1,40 @@
+# cSpell:ignore datetime
+messages:
+  category: validation
+  description: acts-core-server-libにて利用するバリデータのエラーメッセージ
+  properties:
+    - description: フィールドの値がバイト制限を超過している場合のメッセージ。
+      key: acts.validation.constraints.string.OutOfMaxByteCount
+      value:
+        ja: "@@Fieldは{value}バイト以内で入力してください"
+        en: "@@Field must be entered within {value} bytes."
+    - description: 入力文字数が指定範囲外の場合のメッセージ。
+      key: acts.validation.constraints.string.OutOfMinMaxCharacterCount
+      value:
+        ja: "@@Fieldは{min}から{max}文字以内で入力してください"
+        en: "@@Field must be between {min} and {max} characters."
+    - description: 入力値が指定されたEnumClassに存在しない場合に使用するメッセージ
+      key: acts.validation.constraints.enum.InvalidValue
+      value:
+        ja: "@@Fieldに許可されない値が入力されています。"
+        en: "@@Field contains an invalid value."
+    - description: 日付形式が指定(YYYY-MM-DD)と異なる場合のメッセージ。
+      key: acts.validation.constraints.datetime.InvalidLocalDateFormat
+      value:
+        ja: "@@Fieldの日付形式が不正です。ISO8601形式（YYYY-MM-DD）で指定してください"
+        en: "The date format in @@Field is invalid. Please specify in ISO8601 format (YYYY-MM-DD)."
+    - description: 日付形式が指定(YYYY-MM-DDThh:mm:ss)と異なる場合のメッセージ。
+      key: acts.validation.constraints.datetime.InvalidLocalDateTimeFormat
+      value:
+        ja: "@@Fieldの日時形式が不正です。ISO8601形式（YYYY-MM-DDThh:mm:ss）で指定してください"
+        en: "The date and time format in @@Field is invalid. Please specify in ISO8601 format (YYYY-MM-DDThh:mm:ss)."
+    - description: 日付形式が指定(YYYY-MM-DDThh:mm:ss+00:00)と異なる場合のメッセージ。
+      key: acts.validation.constraints.datetime.InvalidZonedDateTimeFormat
+      value:
+        ja: "@@Fieldの日時形式が不正です。ISO8601形式（YYYY-MM-DDThh:mm:ssXXX）で指定してください"
+        en: "The date and time format in @@Field is invalid. Please specify in ISO8601 format (YYYY-MM-DDThh:mm:ssXXX)."
+    - description: 日付形式が指定(YYYY-MM-DDThh:mm:ssXXX)と異なる場合のメッセージ。
+      key: acts.validation.constraints.datetime.InvalidOffsetDateTimeFormat
+      value:
+        ja: "@@Fieldの日時形式が不正です。ISO8601形式（YYYY-MM-DDThh:mm:ssXXX）で指定してください"
+        en: "The date and time format in @@Field is invalid. Please specify in ISO8601 format (YYYY-MM-DDThh:mm:ssXXX)."

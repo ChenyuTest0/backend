@@ -1,0 +1,32 @@
+// cSpell:words appprops logback
+jenkins:
+  profile:
+    master: dev
+  slack:
+    title: "ACTS Core Server Skeleton"
+  openapi:
+    languages:
+      - ja
+      - en
+  kubernetes:
+    deploy:
+      environment: acts-core-server-skeleton
+  crosscheck:
+    profile:
+      - dev
+      - feature
+      - prod
+    files:
+      # 環境別設定ファイル
+      - src/main/resources/appprops/application.env.yml
+      # log設定
+      - src/main/resources/logback/dev.xml
+      - src/main/resources/logback/local.xml
+      - src/main/resources/logback/prod.xml
+      # message
+      - src/main/resources/messages/app-system.yml
+      - src/main/resources/messages/app-validation.yml
+      - src/main/resources/messages/core-request.yml
+      - src/main/resources/messages/core-system.yml
+      - src/main/resources/messages/core-validation.yml
+      - src/main/resources/messages/lib.yml

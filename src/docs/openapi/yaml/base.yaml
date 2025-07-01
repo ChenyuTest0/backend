@@ -1,0 +1,36 @@
+openapi: "3.0.0"
+
+info:
+  version: 0.0.1-SNAPSHOT
+  title: Acts - Skeleton APIs
+  description: |
+    #### 最終更新日時： @LAST_UPDATE@
+  x-description-i18n:
+    en: |
+      #### Last Modified: @LAST_UPDATE@
+servers:
+  - url: "@HOST@"
+tags:
+  - name: Sample
+    description: サンプル機能
+
+paths:
+  /sample/todo:
+    post:
+      operationId: Sample
+      tags:
+        - Sample
+      description: |
+        OpenApiのエラーを抑制するためのダミーとなる。
+
+        * Acts標準としてはpaths配下は `src/docs/openapi/yaml/paths` にファイル分割を推奨している。
+        * 詳細については[OpenAPIガイド](https://adp001011.acnshared.com/nexus/repository/specification/acts-dev-guide-adoc/dev/adoc/html5/ja/dev-guide/api/openapi/index.html)を参照。
+      responses:
+        "200":
+          description: "正常処理"
+          content:
+            application/json:
+              schema:
+                properties:
+                  todo:
+                    type: string

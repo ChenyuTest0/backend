@@ -1,0 +1,62 @@
+// cSpell:ignore docname
+// cSpell:disable
+// ドキュメント設定
+:lang: ja
+:doctype: book
+:toc: left
+:toclevels: 3
+:toc-title: Table of Contents
+:sectnums:
+:sectnumlevels: 4
+:sectlinks:
+:icons: font
+:y: icon:check[role="green"]
+:n: icon:times[role="red"]
+:m: icon:minus[role="blue"]
+:source-highlighter: coderay
+:chapter-label:
+:experimental:
+:imagesdir: images
+:imagesoutdir: images
+
+// PDF設定
+:pdf-theme: default-with-fallback-font
+// 表紙背景の画像についてはActsプラグインが内包しビルド時にimagesに配置する
+:title-logo-image: image:Logo_Accenture.svg.png[width="300"]
+// :title-page-background-image: image:confidential_cover.png[size=cover]
+:title-page-background-image: image:internal_only.png[size=cover]
+// cSpell:enable
+
+ifeval::["{lang}" == "ja"]
+:docname: OpenApi変更履歴
+
+= OpenApi変更履歴
+endif::[]
+
+ifeval::["{lang}" == "en"]
+:docname: OpenApi changelog
+
+// cSpell:enable
+
+= OpenApi changelog
+endif::[]
+
+ifeval::["{lang}" == "ja"]
+== version別一覧
+endif::[]
+
+ifeval::["{lang}" == "en"]
+== version list
+endif::[]
+
+@VERSIONS@
+
+ifeval::["{lang}" == "ja"]
+== API別一覧
+endif::[]
+
+ifeval::["{lang}" == "en"]
+== API type list
+endif::[]
+
+@API_VERSIONS@

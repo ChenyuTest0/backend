@@ -1,0 +1,67 @@
+<!-- 標準出力のログをJsonフォーマットにする。 -->
+
+<!-- * ECSでActsをDocker Imageで起動して標準出力をログとしてcloud watchへ転送するを前提としている -->
+<!-- * cloud watchでの一覧でもログレベル等が先頭に来るように順番を調整してある -->
+
+<!-- AWS cloud watchへjsonフォーマットでログを送信することで以下のメリットが生じる。 -->
+
+<!-- * ログ行と例外が別データ(別行)として扱われなくなる -->
+<!-- * インサイトのクエリで絞り込み/データ表示が可能になる。 -->
+
+<!-- インサイトのクエリ例としては以下でエラーログのみ上位20件を抽出可能となる。 -->
+<!-- * スタックトレースに関しては全量を一覧にだしても意味はないので100文字で切っている。 -->
+
+<!-- ``` -->
+<!-- fields @timestamp, requestURI, deviceId, message, substr(stack_trace, 0, 100) as stackTrace, @logStream, @log -->
+<!-- | sort @timestamp desc -->
+<!-- | filter level = "ERROR" -->
+<!-- | limit 20 -->
+<!-- ``` -->
+
+<!-- cloud watchのフィルタでエラーログのみ検索する場合は以下となる。 -->
+
+<!-- ``` -->
+<!-- {$.level=ERROR} -->
+<!-- ``` -->
+
+<!-- 使用する場合は依存関係に以下を追加する必要がある。 -->
+
+<!-- implementation 'net.logstash.logback:logstash-logback-encoder:[最新バージョン]' -->
+
+<!-- デメリットとしてはcloud watchからS3へログをファイルとしてアーカイブ保存した場合でも1行がJsonフォーマットになる。 -->
+<!-- その場合はjqコマンドなどで独自解析して別途ログファイル化などを行う前提となっている。 -->
+<included>
+  <appender name="jsonFormat" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <logLevel />
+        <callerData>
+          <classFieldName>class</classFieldName>
+          <methodFieldName>method</methodFieldName>
+          <fileFieldName>[ignore]</fileFieldName>
+          <lineFieldName>line</lineFieldName>
+        </callerData>
+        <pattern>
+          <pattern>
+            {
+            "message": "%message%ex",
+            "thread": "%thread",
+            "requestURI": "%mdc{requestURI}",
+            "deviceId": "%mdc{deviceId}",
+            "timestamp": "%date{ISO8601}"
+            }
+          </pattern>
+        </pattern>
+        <stackTrace>
+          <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+            <maxDepthPerThrowable>full</maxDepthPerThrowable>
+            <maxLength>full</maxLength>
+            <shortenedClassNameLength>20</shortenedClassNameLength>
+            <exclusions>${STE_EXCLUSIONS}</exclusions>
+            <rootCauseFirst>true</rootCauseFirst>
+          </throwableConverter>
+        </stackTrace>
+      </providers>
+    </encoder>
+  </appender>
+</included>

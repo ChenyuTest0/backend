@@ -1,0 +1,8 @@
+<included>
+  <include resource="logback/appender/console.xml" />
+  <include resource="logback/appender/file.xml" />
+  <root>
+    <appender-ref ref="console" />
+    <appender-ref ref="file" />
+  </root>
+</included>

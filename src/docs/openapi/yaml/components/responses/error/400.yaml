@@ -1,0 +1,39 @@
+description: |
+  リクエストパラメータが不正だった場合のレスポンス
+content:
+  application/json:
+    schema:
+      title: ValidationFailureResponse
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: "エラーを表す文字列。VALIDATION_FAILUREで固定。"
+          example: VALIDATION_FAILURE
+        fields:
+          type: array
+          nullable: true
+          description: "単項目エラーが発生した場合、エラーが発生したフィールド名とエラーメッセージのペアを保持する。"
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: "エラーが発生した項目の名称"
+                example: incentiveId
+              message:
+                type: string
+                description: "エラーメッセージ"
+                example: インセンティブIDは1から999までの整数で入力してください。
+        global:
+          type: array
+          description: "特定の項目に紐づかないバリデーションエラーのメッセージを保持する。"
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                description: "エラーメッセージ"
+                example: 本日の出金限度額を超過したため、処理が行えませんでした。

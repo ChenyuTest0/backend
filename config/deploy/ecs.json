@@ -1,0 +1,60 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "@sys.profile@-ecs-@sys.name@",
+      "image": "@accountId@.dkr.ecr.ap-northeast-1.amazonaws.com/@sys.name@:@sys.version@",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "containerPort": 15000,
+          "hostPort": 15000,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "SPRING_PROFILES_ACTIVE",
+          "value": "@sys.profile@"
+        }
+      ],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "secrets": [
+        {
+          "name": "SPRING_DATASOURCE_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:@accountId@:secret:@profile@-xxxxxxxx-xxxxxx:password:"
+        },
+        {
+          "name": "SPRING_DATASOURCE_USERNAME",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:@accountId@:secret:@profile@-xxxxxxxx-xxxxxx:user:"
+        }
+      ],
+      "readonlyRootFilesystem": true,
+      "ulimits": [
+        {
+          "name": "nofile",
+          "softLimit": 32767,
+          "hardLimit": 65535
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/@sys.profile@-log-cw-@sys.name@",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "family": "@sys.profile@-ecs-task-@sys.name@",
+  "taskRoleArn": "arn:aws:iam::@accountId@:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::@accountId@:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "volumes": [],
+  "placementConstraints": [],
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "@ecs.cpu@",
+  "memory": "@ecs.memory@"
+}

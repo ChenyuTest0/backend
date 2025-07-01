@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <springProperty name="springProfilesActive" source="spring.profiles.active" />
+  <springProperty name="logFilePath" source="log.file.path" />
+  <springProperty name="logFileExtension" source="log.file.extension" />
+  <springProperty name="logFileMaxHistory" source="log.file.max.history" />
+  <springProperty name="logClientErrorFilePath" source="log.client.error.file.path" />
+  <springProperty name="logClientErrorFileMaxHistory" source="log.client.error.file.max.history" />
+  <springProperty name="logFileJsonPath" source="log.file.json.path" />
+  <springProperty name="logFileJsonExtension" source="log.file.json.extension" />
+  <springProperty name="logFileJsonMaxHistory" source="log.file.json.max.history" />
+  <springProperty name="logSyslogHost" source="log.syslog.host" />
+  <springProperty name="logSyslogPort" source="log.syslog.port" />
+  <springProperty name="logSyslogFacility" source="log.syslog.facility" />
+  <springProperty name="logSyslogCharset" source="log.syslog.charset" />
+  <springProperty name="logSlackToken" source="log.slack.token" />
+
+  <conversionRule conversionWord="m" converterClass="com.accenture.acts.logback.MessageMaskConverter" />
+
+  <contextName>${HOSTNAME}</contextName>
+
+  <springProfile name="local">
+    <include resource="logback/local.xml" />
+  </springProfile>
+
+  <springProfile name="feature,dev">
+    <include resource="logback/dev.xml" />
+  </springProfile>
+
+  <springProfile name="prod">
+    <include resource="logback/prod.xml" />
+  </springProfile>
+
+</configuration>

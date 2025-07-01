@@ -1,0 +1,4 @@
+/**
+ * ビジネスロジックを実行するServiceクラスの実装を配置するパッケージ。
+ */
+package com.skeleton.service.impl;

@@ -1,0 +1,99 @@
+# Specifies files to intentionally ignore when using Git
+# http://git-scm.com/docs/gitignore
+
+### プロジェクト固有ファイル ###
+src/main/resources/application-*.yml
+src/docs/openapi/gen/
+src/test/groovy/com/skeleton/requestdto/testcase/gen
+src/main/java/com/skeleton/requestdto/gen
+src/main/java/com/skeleton/responsedto/gen
+src/main/java/com/skeleton/controller/gen
+src/main/java/com/skeleton/service/gen
+src/main/java/com/skeleton/entity/gen
+
+config/checkstyle.xml
+config/eclipse-java-importorder.importorder
+config/eclipse-java-style.xml
+config/eclipse-groovy-style.xml
+config/eclipse-json-style.prefs
+config/eclipse-xml-style.prefs
+config/greclipse.properties
+config/codenarc.groovy
+logs
+cov.xml
+
+### 自動生成テストヘルパー ###
+src/test/assertions
+
+### バージョンファイル ###
+src/main/resources/www/version.json
+src/main/resources/banner.txt
+
+### メッセージファイル ###
+src/main/java/**/MessageConst.java
+src/main/resources/messages*.properties
+src/test/resources/ValidationMessages*.properties
+
+## 以下プロジェクト共有テンプレート##
+
+### Build Tool ###
+.gradle
+build
+node_modules
+
+### IDE/Editor ###
+.checkstyle
+.classpath
+.project
+.settings/
+bin/
+classes/
+.idea/
+*.iml
+*.ipr
+*.iws
+out
+
+### 検証用ファイル ###
+# patch.diffはsource treeのデフォルトパッチファイル名
+# スクリプト言語系はrootディレクトリで検証する事があるので追跡対象外にする
+/patch.diff
+/test.groovy
+/test.ruby
+/test.rb
+/test.py
+/test.js
+/test.ts
+
+### SQLクライアント ###
+# VSCode SQL Toolsを使用すると自動で作られるファイル
+/*.session.sql
+
+## OpenAPI
+/src/docs/openapi/yaml/paths/catalog.yaml
+/src/docs/openapi/yaml/api-list.csv
+
+### バックアップ系ファイル###
+*.bk
+*.bak
+*.old
+
+### OSファイル ###
+.DS_Store
+Thumbs.db
+*.swp
+*.dump
+
+### redpenダウンロードディレクトリ ###
+.redpen
+
+### direnv ###
+/.envrc
+
+### Asciidoc ###
+.dist
+src/docs/asciidoc/**/*.html
+src/docs/openapi/changelog/**/*.html
+
+### textlint ###
+.textlintcache

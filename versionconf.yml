@@ -1,0 +1,15 @@
+---
+files:
+  - path: gradle.properties
+    regexp: ^sysVersion=.*
+    replace: sysVersion=@@version
+  - path: src/docs/openapi/yaml/base.yaml
+    regexp: ^version:.*
+    replace: "version: @@version"
+  - path: src/docs/openapi/yaml/paths
+    extension: yaml
+    regexp: ^\s{4}\-\sversion:\ssnapshot
+    replace: "    - version: v@@version"
+  - path: CHANGELOG.md
+    regexp: "^## snapshot"
+    replace: "## @@version"

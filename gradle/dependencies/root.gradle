@@ -1,0 +1,44 @@
+configurations {
+  // デフォルト24hのキャッシュ参照時間を0に設定する。
+  // SNAPSHOTを使用しないなら削除しても構いません
+  all {
+    resolutionStrategy {
+      cacheChangingModulesFor 0, 'seconds'
+      cacheDynamicVersionsFor 0, 'seconds'
+    }
+  }
+  // Spring FlameWorkで警告ログが出力されるのでその対処
+  // Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+  // https://github.com/spring-projects/spring-framework/issues/30575
+  configureEach {
+    exclude group: 'commons-logging', module: 'commons-logging'
+  }
+}
+
+repositories {
+  maven {
+    url "$nexusHost/$nexusRepositoryPath/$nexusMvnPublic"
+    credentials {
+      username nexusUsername
+      password nexusPassword
+    }
+  }
+  mavenCentral()
+}
+
+ext {
+  versions = [
+    // 複数のdependencyに対して整合性を取る必要があるversionのみ記載。
+    jackson       : '2.19.0',
+    spring        : '3.5.0',
+    checkstyle    : '8.18',
+    junit         : '5.13.0',
+    jmockit       : '1.49',
+    tomcat        : '9.0.65',
+    groovyAll     : '4.0.27',
+    actsSpockLib  : '0.4.4'
+  ]
+}
+
+apply from: "$rootDir/gradle/dependencies/core.gradle"
+apply from: "$rootDir/gradle/dependencies/additional.gradle"

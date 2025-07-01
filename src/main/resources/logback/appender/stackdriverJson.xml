@@ -1,0 +1,32 @@
+<included>
+  <appender name="stackdriverJson" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <callerData>
+          <classFieldName>[ignore]</classFieldName>
+          <methodFieldName>method</methodFieldName>
+          <lineFieldName>[ignore]</lineFieldName>
+          <fileFieldName>[ignore]</fileFieldName>
+        </callerData>
+        <pattern>
+          <pattern>
+            {
+            "class": "%logger",
+            "idToken": "%mdc{idToken}",
+            "deviceId": "%mdc{deviceId}",
+            "logging.googleapis.com/trace": "%mdc{traceId}",
+            "logging.googleapis.com/spanId": "%mdc{spanId}",
+            "message": "%message%ex",
+            "requestURI": "%mdc{requestURI}",
+            "severity": "%level",
+            "thread": "%thread",
+            "time":"%date{ISO8601}",
+            "x-request-id": "%mdc{requestId}"
+            }
+          </pattern>
+        </pattern>
+        <stackTrace />
+      </providers>
+    </encoder>
+  </appender>
+</included>

@@ -1,0 +1,78 @@
+// cspell:disable
+:lang: ja
+:generate-lang: ja, en
+:doctype: book
+:toc: left
+:toclevels: 4
+:toc-title: 目次
+:sectnums:
+:sectnumlevels: 4
+:sectlinks:
+:icons: font
+:source-highlighter: rouge
+:example-caption: 例
+:table-caption: 表
+:figure-caption: 図
+:sectnums:
+:chapter-label:
+:experimental:
+:linkattrs:
+
+:imagesdir: images
+:imagesoutdir: images
+
+// PDF設定
+// imageのパスは :imagesdir: からのパスになる
+:title-logo-image: image:Logo_Accenture.svg.png[width="300"]
+
+// PDF: confidential
+:pdf-theme: default-with-fallback-font
+// imageのパスは :imagesdir: からのパスになる
+:title-page-background-image: image:confidential.png[size=cover]
+
+// PDF: For Internal Use Only
+////
+:pdf-style: theme/style/internal_only.yml
+:title-page-background-image: image:internal_only.png[size=cover]
+////
+
+:docname: CVE
+:author: Accenture
+:revnumber: 1.2.4-SNAPSHOT
+:revdate: 2025/06/05
+// cspell:enable
+
+= CVE
+
+[[CVE-2023-25330]]
+[suppress='SuccessiveSentence']
+== CVE-2023-25330
+
+https://nvd.nist.gov/vuln/detail/CVE-2023-25330[CVE-2023-25330]
+
+=== 見解
+
+mybatis-plus-extension を使用していないため影響はない。誤検知と思われる。
+
+=== ライブラリ
+
+// cspell:disable
+* mybatis-dynamic-sql-1.5.2.jar
+// cspell:enable
+
+[[CVE-2020-26945]]
+[suppress='SuccessiveSentence']
+== CVE-2020-26945
+
+https://nvd.nist.gov/vuln/detail/CVE-2020-26945[CVE-2020-26945]
+
+=== 見解
+
+MyBatis は最新版を使用しているため影響はない。誤検知と思われる。
+
+=== ライブラリ
+
+// cspell:disable
+* mybatis-dynamic-sql-1.5.2.jar
+// cspell:enable
+

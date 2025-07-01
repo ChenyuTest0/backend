@@ -1,0 +1,56 @@
+// cspell:disable
+:lang: ja
+:doctype: book
+:toc: left
+:toclevels: 4
+:toc-title: 目次
+:sectnums:
+:sectnumlevels: 4
+:sectlinks:
+:icons: font
+:source-highlighter: rouge
+:example-caption: 例
+:table-caption: 表
+:figure-caption: 図
+:sectnums:
+:chapter-label:
+:experimental:
+:linkattrs:
+
+:imagesdir: images
+:imagesoutdir: images
+
+// PDF設定
+// imageのパスは :imagesdir: からのパスになる
+:title-logo-image: image:Logo_Accenture.svg.png[width="300"]
+
+// PDF: confidential
+:pdf-theme: default-with-fallback-font
+// imageのパスは :imagesdir: からのパスになる
+:title-page-background-image: image:confidential.png[size=cover]
+
+// PDF: For Internal Use Only
+////
+:pdf-theme: default-with-fallback-font
+:title-page-background-image: image:internal_only.png[size=cover]
+////
+
+:docname: Acts Core Serverアップデートガイド
+:author: Accenture
+:revnumber: 1.1.0
+:revdate: 2023/03/09
+// cspell:enable
+
+= Acts Core Serverアップデートガイド
+
+== 概要
+
+大きな変更がある場合にアップデートする箇所をまとめます。
+
+大まかな概要の説明になるので詳細についてはマージリクエストを参照して下さい。
+
+== バージョン
+
+include::boot3_0.adoc[]
+
+include::boot2_7.adoc[]

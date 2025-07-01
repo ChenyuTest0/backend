@@ -1,0 +1,4 @@
+/**
+ * APIの受け口となるControllerクラスを配置するパッケージ。<br>
+ */
+package com.skeleton.controller;

@@ -1,0 +1,7 @@
+/**
+ * コードと値のペアを管理するパッケージ。<br>
+ * 本パッケージのクラスは{@link com.accenture.acts.code.CodeBase}を実装する必要がある。
+ *
+ * @see com.accenture.acts.code.CodeBase
+ */
+package com.skeleton.code;

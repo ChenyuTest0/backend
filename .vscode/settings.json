@@ -1,0 +1,68 @@
+{
+  "java.format.settings.url": "config/eclipse-java-style.xml",
+  "java.format.settings.profile": "JavaCodeStyle",
+  "java.format.comments.enabled": false,
+  "java.completion.importOrder": [
+    "#",
+    "java",
+    "javax",
+    "jakarta",
+    "",
+    "com.accenture"
+  ],
+  "java.checkstyle.version": "10.21.0",
+  "java.checkstyle.configuration": "config/checkstyle.xml",
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "coverage-gutters.showGutterCoverage": false,
+  "coverage-gutters.showLineCoverage": true,
+  "files.exclude": {
+    ".gradle": true,
+    ".checkstyle": true,
+    "bin": true,
+    ".classpath": true,
+    ".project": true,
+    ".settings": true,
+    ".factorypath": true,
+    "*.iml": true,
+    "*.ipr": true,
+    "*.iws": true,
+    ".redpen": true
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  },
+  "thunder-client.saveToWorkspace": true,
+  "sonarlint.connectedMode.project": {
+    "connectionId": "ACTS",
+    "projectKey": "acts-core-server-skeleton-java17:main"
+  },
+  "sonarlint.analyzerProperties": {
+    "sonar.java.source": "17"
+  },
+  "asciidoc.extensions.enableKroki": true,
+  "asciidoc.preview.asciidoctorAttributes": {
+    "kroki-server-url": "https://adp001011.acnshared.com.acnshared.com/kroki"
+  }
+  // Java21の際にPSの文字化けを解消する設定
+  // "terminal.integrated.defaultProfile.windows": "PowerShell",
+  // "terminal.integrated.profiles.windows": {
+  //   "PowerShell": {
+  //     "source": "PowerShell",
+  //     "args": [
+  //       "-NoExit",
+  //       "-Command",
+  //       "& {chcp 65001; $PSDefaultParameterValues['*:Encoding'] = 'utf8'; $OutputEncoding = [System.Text.UTF8Encoding]::new($false); [System.Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false);}"
+  //     ]
+  //   }
+  // }
+}

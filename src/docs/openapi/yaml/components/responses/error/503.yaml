@@ -1,0 +1,38 @@
+description: |
+  サーバメンテナンス中にアクセスがあった場合のレスポンス
+content:
+  application/json:
+    schema:
+      title: SystemUnavailableErrorResponse
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: "エラーを表す文字列。SYSTEM_FAILUREで固定。"
+          example: SYSTEM_FAILURE
+        fields:
+          type: array
+          nullable: true
+          description: "単項目エラー発生時用のフィールドだが、503の場合は発生しないため常にNullとなる。"
+          example: []
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: "エラーが発生した項目の名称"
+              message:
+                type: string
+                description: "エラーメッセージ"
+        global:
+          type: array
+          description: "システムエラーのメッセージを保持する。"
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                description: "エラーメッセージ"
+                example: 現在メンテナンス中です。時間をおいて再度アクセスしてください。

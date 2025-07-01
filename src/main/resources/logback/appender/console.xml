@@ -1,0 +1,7 @@
+<included>
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %-50c{5} - %m%n%ex</pattern>
+    </encoder>
+  </appender>
+</included>

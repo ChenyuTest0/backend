@@ -1,0 +1,190 @@
+// cspell:ignore codehaus glassfish appender
+=== Spring Boot 2.7.x => 3.0.x
+
+差分取り込み::
+
+以下のファイル差分を取り込んで下さい。
++
+細かな変更点は以下を参照してください。
++
+* link:https://adp001011.acnshared.com/gitlab/jp_adep_base/acts-core-server-skeleton-java11/-/compare/master%2E%2E%2Efeature%2Fspring3[acts-core-server-skeleton-java11 のfeature/spring3ブランチのコミット]
+* link:https://adp001011.acnshared.com/gitlab/jp_adep_base/acts3-backend/acts-core-server-skeleton-java17/-/merge_requests?scope=all&state=merged[acts-core-server-skeleton-java17 のマージリクエスト]
+
+Java Version::
+
+Spring Boot 3 は `Java17` 以上が必要です。
++
+以下の差分をプロジェクト側で取り込んで下さい。
++
+* .java-version
+* build.gradle の以下の部分
++
+[source, bash, options="nowrap"]
+----
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+----
+
+dependencies::
+
+以下の差分をプロジェクト側で実施して必要な差分を取り込んで下さい。
++
+* build.gradle
+* `gradle/dependencies` 配下の依存関係ファイル
+** 主なライブラリの変更は以下の通りです。
+*** `acts-core-server-lib` を `com.accenture.acts:acts-core-server-lib-java17` に変更
+*** `org.codehaus.groovy:groovy-all` を `org.apache.groovy:groovy-all` に変更
+*** spock関連のライブラリをgroovy 4.0版に変更
+*** `javax.el:javax.el-api` の削除
+*** `javax.servlet:javax.servlet-api` の削除
+*** `org.glassfish.web:javax.el` の削除
+*** `org.mockito:mockito-core` の削除
+** 上記の他は基本的に最新化すれば良いので 上記を反映後、以下のコマンドで更新ライブラリ一覧を生成して確認して下さい。
++
+[source, bash, options="nowrap"]
+----
+gradle clean dependencyUpdates
+----
++
+* Acts Gradle pluginのメジャーバージョンが変更されている場合、そのプラグインは `Java11` 以上が必要になります。
+** Acts1などのJava8については今後サポート対象外となります。
+** `message-resources2properties` を `2.0.x` => `2.1.x` に変更した場合は多言語化がされているので変更が必要です。
+*** 詳しくはActsアップデートガイドを参照してください
+
+[suppress='SuccessiveSentence']
+==== プロジェクト側で開発したソースの修正
+
+===== パッケージ名変更
+
+Spring Boot 3ではJakarta EE 10に変更されました。
+
+* この影響でJakarta EEで提供されているクラスのパッケージ名が変わっています。
+** Jakarta EEで提供されているクラスのパッケージ名をjavax.*からjakarta.*に変更
+
+対象となるクラスの例です。（一部のみ掲載）
+
+* javax.validation.constraints.NotBlank
+* javax.validation.constraints.NotNull
+* javax.servlet.http.HttpServletRequest
+* javax.servlet.http.HttpServletResponse
+
+プロジェクト側で開発したソースに対してパッケージ名作業を行ってください。
+
+* 変更作業後に `gradlew spotlessApply build` を実行してビルドを行ってエラーの無いことを確認して下さい
+
+[TIP]
+====
+VSCodeで以下の条件で一括置換も可能です。
+
+検索条件::
+javax\.(servlet|validation)
+
+正規表現::
+あり
+
+置換文字::
+jakarta.$1
+
+含めるファイル::
+*.java, *.groovy
+
+====
+
+Actsテンプレートの場合は以下が該当します。
+
+main::
+
+* src/main/java/com/accenture/acts/filter/LoggingFilter.java
+** importするクラスのパッケージ名を修正 (Jakarta EEの変更に伴うもの)
+* src/main/resources/messages/lib.yml
+** クラスのパッケージ名を修正 (Jakarta EEの変更に伴うもの)
+
+test::
+
+* src/test/groovy/com/accenture/skeleton/test/common/BeanValidator.groovy
+** importするクラスのパッケージ名を修正 (Jakarta EEの変更に伴うもの)
+* src/test/groovy/com/accenture/skeleton/validator/ValidateMessageSpec.groovy
+** 新規追加
+
+===== その他変更
+
+org.apache.commons.lang` パッケージ::
+
+org.apache.commons.langの依存関係が無くなります。
++
+依存関係を使用している場合は `org.apache.commons:commons-lang3` を依存に追加して変更が必要です
++
+* `org.apache.commons.lang.StringUtils` の場合、`org.apache.commons.lang3.StringUtils` などに変更する
+
+RestTemplate::
+
+RestTemplateを生成する処理でDefaultResponseErrorHandlerのメソッドをオーバーライドしている場合対応が必要です。
+
+* 以下のように引数の `HttpStatus` を `HttpStatusCode` に変更してください。
+* Spring Boot 3でHttpStatusCodeが追加され、HttpStatusと一部置き換えられているため
++
+修正前:::
++
+[source, java, options="nowrap"]
+----
+RestTemplate restTemplate = builder.errorHandler(new DefaultResponseErrorHandler() {
+    @Override
+    protected boolean hasError(HttpStatus statusCode) {
+        return false;
+    }
+}).
+----
++
+修正後:::
++
+[source, java, options="nowrap"]
+----
+RestTemplate restTemplate = builder.errorHandler(new DefaultResponseErrorHandler() {
+    @Override
+    protected boolean hasError(HttpStatusCode statusCode) {
+        return false;
+    }
+}).
+----
+
+SslExceptionRetryHandler::
+
+Actsで提供するSslExceptionRetryHandlerクラスを使用している場合、SslExceptionRetryStrategyクラスに変更してください。
+
+* Spring Boot 3ではRestTemplateで使用するApache HttpClientが4から5にアップデートされました。
+* その影響でSslExceptionRetryHandlerのスーパークラスが以下に変わりそれに合わせた変更です
+
+変更前:::
+org.apache.http.impl.client.DefaultHttpRequestRetryHandler
+変更後:::
+org.apache.hc.client5.http.impl.DefaultHttpRequestRetryStrategy
+
+[suppress='SentenceLength']
+==== その他
+
+RestTemplateで使用するApache HttpClientのバージョン::
+
+Spring Boot 3では、RestTemplateで使用するApache HttpClientが4から5に変更されました。
+
+* これにより、例えばSocketExceptionなど通信エラー発生時のリトライを管理するクラスが移行されてます
+* デフォルトのリトライ回数が3回から1回になるなど動作にも変更があるようです。
+
+移行前:::
+org.apache.http.impl.client.DefaultHttpRequestRetryHandler
+移行後:::
+org.apache.hc.client5.http.impl.DefaultHttpRequestRetryStrategy
+
+
+SpockのGroovyバージョン::
+
+Spockで使用するGroovyのバージョンを3から4に変更しています。
+
+* IDE上でSpockのテストをする場合はGroovyのバージョンにご注意ください。
+
+slf4jのバージョン::
+
+ログ出力のslf4j-apiがSpring boot3にすることで2系にバージョンアップされます。
++
+プロジェクトにてslf4jを使用するライブラリがあると動作しない事があります。
++
+* link:https://github.com/j256/cloudwatch-logback-appender[com.j256.cloudwatchlogbackappender:cloudwatchlogbackappender] を使用していると現在 link:https://github.com/j256/cloudwatch-logback-appender/issues/50[動作しなくなってる]ことが確認されています

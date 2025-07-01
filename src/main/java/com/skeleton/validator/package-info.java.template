@@ -1,0 +1,4 @@
+/**
+ * 各種Formの相関チェック機能を実装したクラスを配置するパッケージ。
+ */
+package com.skeleton.validator;

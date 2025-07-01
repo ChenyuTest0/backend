@@ -1,0 +1,38 @@
+{
+  // See http://go.microsoft.com/fwlink/?LinkId=827846
+  // for the documentation about the extensions.json format
+  "recommendations": [
+    // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+    // formatter
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    // java
+    "vscjava.vscode-java-pack",
+    "visualstudioexptteam.vscodeintellicode",
+    "shengchen.vscode-checkstyle",
+    "ryanluker.vscode-coverage-gutters",
+    "sonarsource.sonarlint-vscode",
+    // markdown
+    "davidanson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one",
+    // yaml
+    "redhat.vscode-yaml",
+    // xml
+    "redhat.vscode-xml",
+    // asciidoc
+    "asciidoctor.asciidoctor-vscode",
+    "stephanvs.dot",
+    "efanzh.graphviz-preview",
+    // OpenAPI
+    "stoplight.spectral",
+    "42Crunch.vscode-openapi",
+    // git
+    "eamodio.gitlens",
+    // diff tool
+    "ryu1kn.partial-diff",
+    // fix typo tool
+    "streetsidesoftware.code-spell-checker"
+    // tomcat
+    // "redhat.vscode-community-server-connector"
+  ]
+}

@@ -1,0 +1,14 @@
+messages:
+  category: system
+  description: acts-grpc-serverにて利用するシステムエラーメッセージ
+  properties:
+    - description:
+      key: com.skeleton.validation.constraints.grpc.SampleMessage1
+      value:
+        ja: "サンプルメッセージ1 値が不正です ${validatedValue}"
+        en: "Sample message 1 Invalid value ${validatedValue}"
+    - description:
+      key: com.skeleton.validation.constraints.grpc.SampleMessage2
+      value:
+        ja: "サンプルメッセージ2 値が不正です ${validatedValue}"
+        en: "Sample message 2 Invalid value ${validatedValue}"

@@ -1,0 +1,12 @@
+<included>
+  <appender name="syslog" class="ch.qos.logback.classic.net.SyslogAppender">
+    <syslogHost>${logSyslogHost}</syslogHost>
+    <port>${logSyslogPort}</port>
+    <facility>${logSyslogFacility}</facility>
+    <suffixPattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %-32X{traceKey:-________________________________} %c{5}.%M - %m - [th:%thread, umn:%X{userMngNo:-__}, di:%X{deviceId:-__}, uri:%X{requestURI:-__}]%n%ex</suffixPattern>
+    <!--<stackTracePattern>\t</stackTracePattern> -->
+    <!-- スタックトレースをSyslogに送らない -->
+    <throwableExcluded>true</throwableExcluded>
+    <charset>${logSyslogCharset}</charset>
+  </appender>
+</included>

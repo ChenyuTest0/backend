@@ -1,0 +1,128 @@
+=== Spring Boot 2.5.x => 2.7.x
+
+==== 差分取り込み
+
+以下のファイル差分を取り込んで下さい。
+
+細かな変更点はlink:https://adp001011.acnshared.com/gitlab/jp_adep_base/acts-core-server-skeleton-java11/-/merge_requests/55[マージリクエスト]を参照して下さい。
+
+==== dependencies
+
+以下の差分をプロジェクト側で実施して必要な差分を取り込んで下さい。
+
+* build.gradle
+* `gradle/dependencies` 配下の依存関係ファイル
+
+基本的に最新化すれば良いので `com.accenture.acts:acts-core-server-lib-java11` を最新にした後、以下のコマンドで更新ライブラリ一覧を生成して確認して下さい。
+
+[source, bash, options="nowrap"]
+----
+gradle clean dependencyUpdates
+----
+
+Acts Gradle pluginのメジャーバージョンが変更されている場合、そのプラグインは `Java11` 以上が必要になります。
+
+* Acts1などのJava8については今後サポート対象外となります。
+
+==== main
+
+* src/main/java/com/accenture/acts/config/FilterConfig.java
+** `LoggingFilter` の追加
+* src/main/java/com/accenture/acts/config/TransactionConfig.java
+** initializeDataSourceBuilderの変更
+* src/main/java/com/accenture/acts/filter/LoggingFilter.java
+** 新規追加
+* src/main/java/com/accenture/acts/utils/TracingUtils.java
+** 新規追加
+
+[suppress='SentenceLength']
+==== test
+
+* src/test/groovy/com/accenture/acts/interceptor/ClientHttpRequestVersionHeaderSetInterceptorSpec.groovy
+** テスト修正
+* src/test/groovy/com/accenture/acts/utils/TracingUtilsSpec.groovy
+** 新規追加
+
+==== その他
+
+* .vscode/settings.json
+** checkstyleのバージョンが変更されています。
+* config/spotbugs-exclude-filter.xml
+** spotbugsバージョンアップにより `EI_EXPOSE_REP` `EI_EXPOSE_REP2` を除外しています。
+* gradleのアップデート
+** `7.5.1` にアップデートされているので差分を取り込むかgradleをインストールして次のコマンドを実行して下さい。
++
+[source, bash, options="nowrap"]
+----
+gradle wrapper --gradle-version=7.5.1
+----
+* spotlessバージョンアップによりgroovyでインポートオーダファイルが無いエラーが出る問題の対応
+** `gradle/scripts/eclipseSetup.gradle` を上書きするか差分を取り込んで下さい。
+
+* コードフォーマッタの強制
+
+XMLにフォーマット強制を行う設定が入っています。
+
+SQLのインデント等で強制を行いたくない場合は `gradle/scripts/eclipseSetup.gradle` の targetExcludeで除外して下さい。
+
+// cSpell:ignore prefs
+
+[source, bash, options="nowrap"]
+----
+  format 'xml', {
+    target 'src/**/*.xml'
+    // mybatisのMapper XMLを除外する場合は以下を有効にする
+    targetExclude 'src/main/java/**/repository/**/*.xml'
+    eclipseWtp('xml').configFile('config/spotless.xml.prefs')
+    // TODO: https://github.com/diffplug/spotless/issues/792
+    // prettier(['@prettier/plugin-xml': '0.13.1']).config(['parser': 'xml', 'tabWidth': 2])
+  }
+----
+
+補足になりますがmybatisでは link:https://mybatis.org/mybatis-3/ja/java-api.html#mapper-%E3%82%A2%E3%83%8E%E3%83%86%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3[アノテーション] を使用してrepository classに直接SQLの記述が可能です。
+
+* mybatis generator 1.4ではMapper XMLファイルは出力されないようになっています
+** Mapper XMLが廃止になった訳ではありませんがあえて使う必要が無くなったようです
+
+その場合にjavaのコードフォーマッタを部分的に無効にするには以下のコメントで挟んで下さい。
+
+* 未検証ですがJava 17(正確には15で導入)からは link:https://www.baeldung.com/java-text-blocks[Text Blocks] が使用可能なのでもっとスマートに記述が可能になる可能性があります
+
+// cSpell:disable
+[source, java, options="nowrap"]
+----
+    // CHECKSTYLE:OFF
+    // @formatter:off
+    @Select({
+        "select *",
+        "from t_punch_clock",
+        "where emp_id = #{enterpriseId,jdbcType=VARCHAR}",
+            "and punch_date = #{punchDate,jdbcType=DATE}",
+            "and #{punchBn,jdbcType=INTEGER} <= punch_bn"
+    })
+    @ResultMap("com.accenture.mytim.repository.PunchClockRepository.BaseResultMap")
+    // @formatter:on
+    // CHECKSTYLE:ON
+    List<PunchClockEntity> selectByPunchBnGreaterThanOrEqualTo(@Param("enterpriseId") String enterpriseId,
+        @Param("punchDate") LocalDate punchDate, @Param("punchBn") Integer punchBn);
+
+    // <scpipt>で囲むことでforeachも使用可能です
+    // @formatter:off
+    // CHECKSTYLE:OFF
+    @Insert({
+        "<script>",
+            "insert into t_punch_clock_hist (",
+                "emp_id,",
+            ")",
+            "values",
+            "<foreach collection=\"entities\" item=\"item\" separator=\",\"> ",
+                "(",
+                    "#{item.empId,jdbcType=VARCHAR},",
+                ")",
+            "</foreach>",
+        "</script>"
+    })
+    // @formatter:on
+    // CHECKSTYLE:ON
+----
+// cSpell:enable

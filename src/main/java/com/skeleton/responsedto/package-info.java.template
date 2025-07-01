@@ -1,0 +1,4 @@
+/**
+ * レスポンスクラスを配置するパッケージ。
+ */
+package com.skeleton.responsedto;

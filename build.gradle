@@ -1,0 +1,409 @@
+// cSpell:ignore buildscript cpus fixcrlf jacoco Metaspace owasp pathing println srcdir sysname todir vcpu Xlint appprops mkdirs codenarc
+// cSpell:ignore relativeize testcase opencsv Charsets
+buildscript {
+  repositories {
+    maven {
+      url "$nexusHost/$nexusRepositoryPath/$nexusMvnPublic"
+      credentials {
+        username nexusUsername
+        password nexusPassword
+      }
+    }
+    mavenCentral()
+  }
+
+  // cSpell:disable
+  dependencies {
+    // 社内共通pluginなのでビルドバージョンについては最新バージョンを適用する
+    // 'gradle buildEnvironment | grep com.accenture.acts.gradle' で使用しているpluginのバージョンが確認可能
+    classpath 'com.accenture.acts.gradle:profile-loader:1.2.+'
+    classpath 'com.accenture.acts.gradle:asciidoc:2.0.+'
+    classpath 'com.accenture.acts.gradle:redpen:3.1.+'
+    classpath 'com.accenture.acts.gradle:multi-file-openapi:1.17.+'
+    classpath 'com.accenture.acts.gradle:openapi-generator:4.1.+'
+    classpath 'com.accenture.acts.gradle:specification-tool:1.4.+'
+    classpath 'com.accenture.acts.gradle:nexus-raw-uploader:1.4.+'
+    classpath 'com.accenture.acts.gradle:dependency-updates-asciidoc:3.0.+'
+    classpath 'com.accenture.acts.gradle:acts-owasp-dependency-check-plugin:3.1.+'
+    classpath 'com.accenture.acts.gradle:acts-setup-git-hooks:2.1.+'
+    classpath 'com.accenture.acts.gradle:version-json:2.0.+'
+    classpath 'com.accenture.acts.gradle:application-env-yaml:3.0.+'
+    classpath 'com.accenture.acts.gradle:message-resources2properties:3.0.+'
+    classpath 'com.accenture.acts.gradle:javadoc-plugin:2.1.+'
+    classpath 'com.accenture.acts.gradle:spotbugs:2.2.+'
+    classpath 'com.accenture.acts.gradle:checkstyle:3.5.+'
+    classpath 'com.accenture.acts.gradle:jacoco:3.0.+'
+    classpath 'com.accenture.acts.gradle:eclipse-setup:1.2.+'
+    classpath 'com.accenture.acts.gradle:acts-spotless:1.3.+'
+    classpath 'com.accenture.acts.gradle:copy-dependencies:1.0.+'
+    classpath 'com.accenture.acts.gradle:acts-codenarc:1.0.+'
+    classpath 'com.accenture.acts.gradle:acts-code-checker:1.1.+'
+    classpath 'com.accenture.acts.gradle:acts-unit-test:1.2.+'
+    classpath 'com.accenture.acts.gradle:env-yaml-replace-tokens:1.0.+'
+    classpath 'com.accenture.acts.gradle:check-snapshot-dependencies:1.0.+'
+  }
+  // cSpell:enable
+}
+
+// cSpell:disable
+plugins {
+  id 'java'
+  id 'groovy'
+  id 'idea'
+  id 'eclipse'
+  id 'eclipse-wtp'
+  id 'war'
+  id 'maven-publish'
+  id 'codenarc'
+  id 'org.springframework.boot' version '3.5.0'
+  id 'com.github.hierynomus.license-report' version '0.16.1'
+}
+// cSpell:enable
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
+  toolchain {
+    // `./gradlew -q javaToolchains` を実行すると認識されているJDK一覧が確認できる
+    languageVersion = JavaLanguageVersion.of(17)
+    vendor = JvmVendorSpec.AMAZON
+  }
+}
+tasks.withType(AbstractCompile)*.options*.encoding = 'UTF-8'
+
+// プロジェクト毎に変更される値: gradle.propertiesから設定する
+group sysGroup
+version sysVersion
+description = sysname
+base.archivesName = sysname
+
+apply plugin: 'com.accenture.acts.gradle.profile-loader'
+apply plugin: 'com.accenture.acts.gradle.asciidoc'
+apply plugin: 'com.accenture.acts.gradle.redpen'
+apply plugin: 'com.accenture.acts.gradle.openapi-generator'
+apply plugin: 'com.accenture.acts.gradle.specification-tool'
+apply plugin: 'com.accenture.acts.gradle.nexus-raw-uploader'
+apply plugin: 'com.accenture.acts.gradle.dependency-updates-asciidoc'
+apply plugin: 'com.accenture.acts.gradle.acts-owasp-dependency-check-plugin'
+apply plugin: 'com.accenture.acts.gradle.acts-setup-git-hooks'
+apply plugin: 'com.accenture.acts.gradle.version-json'
+apply plugin: 'com.accenture.acts.gradle.application-env-yaml'
+apply plugin: 'com.accenture.acts.gradle.message-resources2properties'
+apply plugin: 'com.accenture.acts.gradle.javadoc-plugin'
+apply plugin: 'com.accenture.acts.gradle.spotbugs'
+apply plugin: 'com.accenture.acts.gradle.checkstyle'
+apply plugin: 'com.accenture.acts.gradle.jacoco'
+apply plugin: 'com.accenture.acts.gradle.eclipse-setup'
+apply plugin: 'com.accenture.acts.gradle.acts-spotless'
+apply plugin: 'com.accenture.acts.gradle.copy-dependencies'
+apply plugin: 'com.accenture.acts.gradle.acts-codenarc'
+apply plugin: 'com.accenture.acts.gradle.acts-code-checker'
+apply plugin: 'com.accenture.acts.gradle.acts-unit-test'
+apply plugin: 'com.accenture.acts.gradle.multi-file-openapi'
+apply plugin: 'com.accenture.acts.gradle.env-yaml-replace-tokens'
+apply plugin: 'com.accenture.acts.gradle.check-snapshot-dependencies'
+
+defaultTasks 'setupGitHooks', 'checkstyleConfig', 'compileJava', 'compileTestJava', 'compileGroovy', 'compileTestGroovy', 'cleanEclipse', 'eclipse'
+
+tasks.withType(GroovyCompile) {
+  configure(groovyOptions.forkOptions) {
+    memoryMaximumSize = '1g'
+    jvmArgs = [
+      '-XX:MaxMetaspaceSize=512m',
+      '-Xms512m',
+      '-Xmx1g'
+    ]
+  }
+}
+
+downloadLicenses {
+  dependencyConfiguration = 'runtimeClasspath'
+}
+
+tasks.withType(JavaCompile) {
+  options.compilerArgs << '-Xlint:all,-serial'
+  // DI時にパラメータ名解決をするフラグ
+  // https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention
+  options.compilerArgs <<('-parameters')
+}
+
+// 依存ライブラリ
+apply from: "$rootDir/gradle/dependencies/root.gradle"
+
+// ユニットテストの並列実行数設定
+// 安いスペックのビルド環境だとかえって遅くなるので注意
+// maxParallelForks = 同時実行数 [vcpu - 1] が望ましいらしいです
+// forkEvery = JVMの再起動の頻度(OutOfMemoryExceptionを回避するためにJVMを再起動する。) - 設定のテスト数を消化するとVMを再起動する。再起動なので数値が低いとかえって遅くなる
+
+// test {
+//     int cpus = Runtime.runtime.availableProcessors()
+//     maxParallelForks = cpus > 1 ? cpus - 1 : 1
+//     println "cpus:$cpus maxParallelForks:$maxParallelForks"
+//     forkEvery = 50
+// }
+
+java {
+  withSourcesJar()
+  withJavadocJar()
+}
+sourcesJar.mustRunAfter versionJson
+sourcesJar.mustRunAfter messageResources2Properties
+sourcesJar.mustRunAfter generateOpenapiYaml
+
+sourceSets {
+  main.resources {
+    exclude '**/db/'
+    exclude '**/messages/'
+    exclude '**/appprops/'
+  }
+}
+
+task fixcrlf {
+  doLast {
+    ant.fixcrlf(srcdir: "src/", eol: "lf")
+  }
+}
+
+war {
+  doLast {
+    ant.checksum(file: archiveFile.get(), todir: destinationDirectory.get(), format: 'MD5SUM')
+  }
+}
+
+bootWar {
+  doLast {
+    ant.checksum(file: archiveFile.get(), todir: destinationDirectory.get(), format: 'MD5SUM')
+  }
+}
+
+jar {
+  doLast {
+    ant.checksum(file: archiveFile.get(), todir: destinationDirectory.get(), format: 'MD5SUM')
+  }
+}
+
+bootJar {
+  doLast {
+    ant.checksum(file: archiveFile.get(), todir: destinationDirectory.get(), format: 'MD5SUM')
+  }
+}
+
+replaceEnvironmentConfig {
+  archivesName = "${base.archivesName.get()}-ecs"
+}
+
+task prepareDockerBuild() {
+  dependsOn bootJar
+  doLast {
+    copy {
+      from bootJar.archiveFile
+      into "$buildDir/docker/api"
+      rename(bootJar.archiveFileName.get(), 'service.jar')
+    }
+    copy {
+      from "$rootDir/docker/api"
+      into "$buildDir/docker/api"
+    }
+  }
+}
+bootJar.finalizedBy prepareDockerBuild
+bootJar.finalizedBy archiveEnvironmentConfig
+
+task copyVersionJson() {
+  doLast {
+    copy {
+      from 'src/main/resources/www/version.json'
+      into "$buildDir/env-archive"
+    }
+  }
+}
+archiveEnvironmentConfig.finalizedBy copyVersionJson
+
+task prepareDockerBuildSpecification() {
+  doLast {
+    copy {
+      from "$rootDir/docker/specification"
+      into "$buildDir/docker/specification"
+    }
+    copy {
+      from "$buildDir/docs"
+      into "$buildDir/docker/specification/docs"
+    }
+  }
+}
+
+eclipse {
+  wtp {
+    component {
+      contextPath = sysname
+    }
+  }
+}
+
+test {
+  useJUnitPlatform()
+}
+
+jacocoTestReport {
+  afterEvaluate {
+    classDirectories.from = files(classDirectories.files.collect {
+      fileTree(dir: it, exclude: [
+        // Actsクラスなので除外
+        'com/accenture/acts/config/**',
+        'com/accenture/acts/serialize/**',
+        // mybatisパッケージは自動生成なので除外
+        '**/code/mybatis/**',
+        '**/repository/mybatis/**',
+      ])
+    })
+  }
+}
+
+setupGitHooks {
+  btsType project.btsType
+}
+
+versionJson {
+  repository = true
+  repositoryPrefix = 'gitlab'
+  springBootBanner = file("$rootDir/src/main/resources/banner.template")
+  useProfile = false
+}
+
+asciidoc {
+  quiet = [
+    'openapi/adoc',
+    'openapi/adoc/ja'
+  ]
+  addAsciidocDirs = [
+    file("$buildDir/dependencyUpdates"),
+    file("$buildDir/messages")
+  ]
+}
+
+messageResources2Properties {
+  testMessages true
+  genConstClass "${sysGroup}.messages.MessageConst"
+  defaultLocale 'ja'
+}
+
+nexusRawUploader {
+  host nexusHost
+  repositoryPath nexusRepositoryPath
+  user nexusUsername
+  password nexusPassword
+
+  repositoryId nexusRawId
+  rootPath sysname
+  uploadDir file("$buildDir/docs")
+
+  useProfilePath true
+  exclude = ['**/.gitkeep']
+}
+
+generateOpenapiYaml {
+  languages = ['ja']
+  asciidocDir file("$projectDir/src/docs/asciidoc/specification")
+  asciidocBaseUrl = [
+    default : "https://adp001011.acnshared.com/nexus/repository/specification/${sysname}",
+    e2e : "http://localhost/api-spec"
+  ]
+  checkPathsRef = true
+
+  codeGenerator = true
+  sourceCodeOutDir = file('src/main/java')
+  testCodeOutDir = file('src/test/groovy')
+  codeGeneratorBasePackage = sysGroup
+  codeGeneratorMessageClass = "${sysGroup}.messages.MessageConst"
+}
+
+openapiGenerator {
+  lang = ['ja']
+}
+
+copyOpenapiYaml {
+  hosts = [
+    default: 'http://localhost:8080',
+    e2e: 'http://localhost/api'
+  ]
+}
+
+redpen {
+  dirs = [
+    [
+      target: file("$rootDir/src/docs/asciidoc"),
+      extension: 'adoc',
+      locale: ['ja'],
+      default: true
+    ]
+  ]
+
+  files = [
+    [
+      target: [
+        file("$rootDir/README.md"),
+        file("$rootDir/src/main/resources/messages.properties")
+      ],
+      locale: 'ja'
+    ]
+  ]
+
+  dict = [
+    'katakana-end-hyphen',
+    'suggest-expressions',
+    'katakana-spell-check'
+  ]
+}
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      from components.java
+    }
+  }
+  repositories {
+    maven {
+      url = version.endsWith('-SNAPSHOT') ? "$nexusHost/$nexusRepositoryPath/$nexusMvnSnapshots" : "$nexusHost/$nexusRepositoryPath/$nexusMvnReleases"
+      credentials {
+        username = nexusUsername
+        password = nexusPassword
+      }
+    }
+  }
+}
+
+task pathingJar(type: Jar) {
+  dependsOn configurations.runtimeClasspath
+  archiveAppendix = 'pathing'
+  doFirst {
+    manifest {
+      attributes "Class-Path": configurations.runtimeClasspath.resolvedConfiguration.files.collect {it.toURL().toString().replaceFirst("file:/", '/')}.join(" ")
+    }
+  }
+}
+
+csvTestCaseGenerator {
+  def projectPackageDir = sysGroup.replaceAll(/\./, '/')
+  csvTestCaseDir = file("src/test/resources/$projectPackageDir/requestdto/testcase")
+  testFixtures = true
+}
+
+
+bootRun {
+  javaLauncher = javaToolchains.launcherFor {
+    languageVersion = JavaLanguageVersion.of(17)
+    vendor = JvmVendorSpec.AMAZON
+  }
+  // Windowsでgradle bootRunコマンドをコマンドラインから実行するとclasspathの文字列が長すぎてエラーとなるのを回避する為に
+  // pathingJarで事前に依存関係を含む単一jarファイルを生成している。
+  // 本プロジェクト配下のコードに変更がない場合はjarファイルが再生成されない可能性があるので
+  // 依存先を更新した場合は--rerun-tasksオプションを付与して強制的にjarファイルの再生成を行う必要がある。
+  dependsOn pathingJar
+  doFirst {
+    classpath = files("$buildDir/classes/java/main", "$buildDir/resources/main", pathingJar.archivePath)
+  }
+}
+
+checkstyleConfig {
+  versionError true
+}

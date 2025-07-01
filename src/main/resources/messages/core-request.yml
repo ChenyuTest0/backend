@@ -1,0 +1,44 @@
+messages:
+  category: request
+  description: acts-core-server-libにて利用するリクエスト不正のメッセージ
+  properties:
+    - description: リクエストの値が不正だった場合のメッセージ。
+      key: acts.validation.constraints.request.Invalid
+      value:
+        ja: "リクエストの値が不正です"
+        en: "The request value is invalid."
+    - description: フィールドの値が不正だった場合のメッセージ。
+      key: acts.validation.constraints.request.InvalidParameter
+      value:
+        ja: "@@Fieldの値が不正です"
+        en: "The value of @@Field is invalid."
+    - description: Content-Typeヘッダが不正だった場合のメッセージ。
+      key: acts.validation.constraints.request.InvalidContentType
+      value:
+        ja: "Content-Typeの値が不正です"
+        en: "The value of Content-Type is invalid."
+    - description: リクエストメソッドがサポートされていない場合のメッセージ。
+      key: acts.validation.constraints.request.UnsupportedMethod
+      value:
+        ja: "Http Method: {0}はサポートしていません"
+        en: "Http Method: {0} is not supported"
+    - description: Clientのバージョン番号が取得できなかった場合のメッセージ。
+      key: acts.validation.constraints.request.UnknownClientVersion
+      value:
+        ja: "アプリのバージョンが未指定です"
+        en: "App version not specified."
+    - description: Clientのバージョン番号がFilterの設定よりも小さかった場合のメッセージ。
+      key: acts.validation.constraints.request.UnderClientVersion
+      value:
+        ja: "新しいバージョンがあります。\\n最新バージョンへ更新してください"
+        en: "There is a new version. \\nPlease update to the latest version."
+    - description: Clientのバージョン番号がFilterの設定よりも大きかった場合のメッセージ。
+      key: acts.validation.constraints.request.OverClientVersion
+      value:
+        ja: "只今サーバメンテナンス中です。"
+        en: "The server is currently under maintenance."
+    - description: リクエスト先が存在しない場合のメッセージ。
+      key: acts.error.system.request.NotFound
+      value:
+        ja: "リクエスト先が見つかりません"
+        en: "Request destination not found."

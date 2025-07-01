@@ -1,0 +1,9 @@
+messages:
+  category: system
+  description: アプリにて利用するシステムエラーのメッセージ
+  properties:
+    - description: サンプルシステムエラー
+      key: com.skeleton.system.error
+      value:
+        ja: "サンプルメッセージ アプリのシステムエラーです"
+        en: "Sample system error."

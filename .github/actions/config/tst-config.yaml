@@ -1,0 +1,13 @@
+jdk: 21
+nodejs: 20.11.1
+pnpm: 10.12.4
+gradle: 8.14.1
+slack_teamDomain: test
+slack_webhookUrl: testURL
+parameter_store:
+  user: userID
+  password: passwordID
+secret_manager:
+  user:
+    adop: ID1
+    admin: ID2

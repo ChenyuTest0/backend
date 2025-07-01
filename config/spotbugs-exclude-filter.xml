@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <Match>
+    <Bug
+      pattern="
+        EI_EXPOSE_REP,
+        EI_EXPOSE_REP2,
+        SE_NO_SERIALVERSIONID,
+        EXS_EXCEPTION_SOFTENING_NO_CHECKED,
+        EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS,
+        PSC_PRESIZE_COLLECTIONS,
+        NFF_NON_FUNCTIONAL_FIELD,
+        EXS_EXCEPTION_SOFTENING_HAS_CHECKED,
+        RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
+        RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
+        BEAN_PROPERTY_INJECTION" />
+    <!-- RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPEとRCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUEはJava
+    11以降でFalse Positiveが発生するため抑制。 -->
+    <!-- https://github.com/spotbugs/spotbugs/issues/756 -->
+    <!-- EI_EXPOSE_REPとEI_EXPOSE_REP2は誤検知される場合があるのとアプリメリットが無い(setter/getterでimmutableにする必要がある)ので抑制。 -->
+    <!-- https://github.com/spotbugs/spotbugs/issues/1601 -->
+    <!-- BEAN_PROPERTY_INJECTIONについてはActsガイドに記載されているがリクエストをBeanに詰め替える際の脆弱性。 -->
+    <!-- 別途Actsで作成したチェッカー(com.accenture.acts.gradle:acts-code-checker)を使用することで検知するので抑制 -->
+    <!-- https://github.com/find-sec-bugs/find-sec-bugs/issues/601 -->
+  </Match>
+  <!-- パッケージ指定でチェック対象外 -->
+  <!-- <Match classregex=".*\.hoge\..*"> <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"
+    /> </Match> -->
+  <!-- テストコードのみ特定の指摘を除外するフィルタ -->
+  <Match>
+    <!-- クラス名の末尾がTestの場合に対象とする -->
+    <Class name="~.*.*Test" />
+    <!-- 以下の指摘を除外する -->
+    <!-- CE_CLASS_ENVY: 別のクラスのメソッドを多く呼び出した際にリファクタリングを推奨する指摘。 -->
+    <!-- HARD_CODE_PASSWORD: ソース中にハードコードされたパスワードに対する指摘。 -->
+    <Bug pattern="CE_CLASS_ENVY,HARD_CODE_PASSWORD" />
+  </Match>
+  <Match>
+    <Source name="~.*\.groovy" />
+  </Match>
+</FindBugsFilter>

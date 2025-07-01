@@ -1,0 +1,34 @@
+<redpen-conf lang="ja">
+  <validators>
+    <validator name="SentenceLength">
+      <property name="max_len" value="100" />
+    </validator>
+    <validator name="CommaNumber" />
+    <validator name="DoubleNegative" />
+    <validator name="JapaneseStyle" />
+    <validator name="KatakanaEndHyphen">
+      <property name="dict" value="katakana-end-hyphen.redpen" />
+    </validator>
+    <validator name="SuggestExpression">
+      <property name="dict" value="suggest-expressions.redpen" />
+    </validator>
+    <validator name="KatakanaSpellCheck">
+      <property name="dict" value="katakana-spell-check.redpen" />
+    </validator>
+    <validator name="Okurigana" />
+    <validator name="SectionLength" />
+    <validator name="SuccessiveWord" />
+    <validator name="WordNumber">
+      <property name="max_num" value="50" />
+    </validator>
+    <validator name="InvalidExpression" />
+    <validator name="JapaneseAmbiguousNounConjunction" />
+    <validator name="JapaneseNumberExpression">
+      <property name="mode" value="kansuji" />
+    </validator>
+    <validator name="LongKanjiChain">
+      <property name="list" value="勤務開始時間,勤務終了時間" />
+    </validator>
+    <validator name="DoubledConjunctiveParticleGa" />
+  </validators>
+</redpen-conf>

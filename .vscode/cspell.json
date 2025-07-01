@@ -1,0 +1,47 @@
+{
+  "version": "0.2",
+  "ignoreRegExpList": [
+    "[０-９Ａ-Ｚａ-ｚぁ-んァ-ヶ亜-熙纊-黑]+"
+  ],
+  "words": [
+    "adoc",
+    "asciidoctor",
+    "bootjar",
+    "checkstyle",
+    "Classpath",
+    "Configurer",
+    "ESAPI",
+    "gitleaks",
+    "gradlew",
+    "ifeval",
+    "javadoc",
+    "javax",
+    "kubernetes",
+    "logback",
+    "mybatis",
+    "Openapi",
+    "pageable",
+    "Pointcut",
+    "rawtypes",
+    "redmine",
+    "redpen",
+    "requestdto",
+    "responsedto",
+    "Servlet",
+    "Sonarqube",
+    "spotbugs",
+    "springframework"
+  ],
+  "ignorePaths": [
+    ".vscode/*.json",
+    "settings.json",
+    "*.xml",
+    "*.csv",
+    "*.template",
+    "src/test/resources/SpockConfig.groovy",
+    "gradlew",
+    "gradlew.bat",
+    "gradle/**/*",
+    "config/**/*"
+  ]
+}

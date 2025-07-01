@@ -1,0 +1,4 @@
+/**
+ * レコードを表現するエンティティクラスを配置するパッケージ。
+ */
+package com.skeleton.entity;

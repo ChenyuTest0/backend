@@ -1,0 +1,7 @@
+:imagesdir: images
+:source-highlighter: highlight.js
+:icons: font
+:experimental:
+:y: icon:check[role="green"]
+:n: icon:times[role="red"]
+:m: icon:minus[role="blue"]

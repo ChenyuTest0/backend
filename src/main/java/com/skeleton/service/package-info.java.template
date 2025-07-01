@@ -1,0 +1,4 @@
+/**
+ * ビジネスロジックを実行するServiceクラスのインターフェースを配置するパッケージ。
+ */
+package com.skeleton.service;

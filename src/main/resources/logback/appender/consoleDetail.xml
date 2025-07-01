@@ -1,0 +1,8 @@
+<included>
+  <appender name="consoleDetail" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %-32X{traceKey:-________________________________} %c{5}.%M - %m - [th:%thread, umn:%X{userMngNo:-__}, di:%X{deviceId:-__}, uri:%X{requestURI:-__}]%n%ex</pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+</included>

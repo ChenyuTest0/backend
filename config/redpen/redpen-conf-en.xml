@@ -1,0 +1,21 @@
+<redpen-conf lang="en">
+  <validators>
+    <validator name="SentenceLength">
+      <property name="max_len" value="200" />
+    </validator>
+    <validator name="CommaNumber" />
+
+    <validator name="InvalidExpression" />
+    <validator name="InvalidWord" />
+    <validator name="Contraction" />
+    <validator name="SuccessiveWord" />
+    <validator name="DoubleNegative" />
+    <validator name="FrequentSentenceStart" level="warn" />
+    <validator name="WordFrequency" level="warn" />
+    <validator name="Hyphenation" />
+    <validator name="NumberFormat" />
+    <validator name="WeakExpression" />
+
+    <validator name="SectionLength" />
+  </validators>
+</redpen-conf>

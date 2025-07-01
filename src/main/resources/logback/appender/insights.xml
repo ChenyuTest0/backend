@@ -1,0 +1,7 @@
+<!--使用する場合は以下のライブラリが必要となる。 -->
+<!-- dependencies { compile 'com.microsoft.azure:applicationinsights-logging-logback:1.0.7' } -->
+<!-- 環境変数の [APPLICATION_INSIGHTS_IKEY] にApplication Insightsの 概要に表示されているインストルメンテーションキーを設定する必要がある -->
+<included>
+  <appender name="aiAppender" class="com.microsoft.applicationinsights.logback.ApplicationInsightsAppender">
+  </appender>
+</included>

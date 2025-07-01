@@ -1,0 +1,52 @@
+name: Run Action from Another Repo
+
+on:
+  push:
+    branches:
+      - main # mainブランチにpushされたときにトリガーされます
+  pull_request:
+    branches:
+      - main # PRがmainに対して作成されたときにトリガーされます
+  workflow_dispatch:
+
+jobs:
+  run_action:
+    runs-on: ubuntu-latest # 使用するOS
+    steps:
+      # 現在のリポジトリをチェックアウト
+      - name: Checkout current repository
+        uses: actions/checkout@v2
+
+      # `actions/common/load-config/action.yaml` のアクションを実行
+      - name: Run the action from commonActions repo
+        id: load-config
+        uses: ChenyuTest0/commonActions/.github/actions/common/load-config@main
+        with:
+          config_file: .github/actions/config/tst-config.yaml
+
+      - name: Show Output1
+        run: |
+          echo "Outputs:"
+          echo "JDK version: ${{ fromJson(steps.load-config.outputs.github_output).jdk }}"
+          echo "slack_teamDomain: ${{ fromJson(steps.load-config.outputs.github_output).slack_teamDomain }}"
+          echo "slack_webhookUrl: ${{ fromJson(steps.load-config.outputs.github_output).slack_webhookUrl }}"
+          echo "parameter_store: ${{ fromJson(steps.load-config.outputs.github_output).parameter_store }}"
+
+      # - name: Run the get-aws-ps-param from commonActions repo
+      #   id: get-aws-ps-param
+      #   uses: ChenyuTest0/commonActions/.github/actions/common/get-aws-ps-param@main
+      #   with:
+      #     input_json: ${{ toJson(fromJson(steps.load-config.outputs.github_output).parameter_store) }}
+
+      # - name: Show Output2
+      #   run: |
+      #     echo "Outputs:"
+      #     echo "user: ${{ fromJson(steps.get-aws-ps-param.outputs.github_output).user }}"
+      #     echo "password: ${{ fromJson(steps.get-aws-ps-param.outputs.github_output).password }}"
+
+      - name: Run backend setup
+        id: init-backend
+        uses: ChenyuTest0/commonActions/.github/actions/common/init-backend@main
+        with:
+          jdk: ${{ fromJson(steps.load-config.outputs.github_output).jdk }}
+          gradle: ${{ fromJson(steps.load-config.outputs.github_output).gradle }}

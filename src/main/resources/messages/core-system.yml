@@ -1,0 +1,29 @@
+messages:
+  category: system
+  description: acts-core-server-libにて利用するシステムエラーメッセージ
+  properties:
+    - description: 認証に失敗した場合に応答するメッセージ。
+      key: acts.error.system.request.AuthenticationFailed
+      value:
+        ja: "認証に失敗しました"
+        en: "Authentication failed"
+    - description: エラーが発生した場合に応答するメッセージ。
+      key: acts.error.system.response.content.error
+      value:
+        ja: "エラーが発生しました"
+        en: "Error occurred"
+    - description: 入力項目に誤りがある場合に応答するメッセージ。
+      key: acts.validation.constraints.request.external.Invalid
+      value:
+        ja: "入力項目に誤りがあります"
+        en: "There is an error in the input field."
+    - description: DeviceIdヘッダが取得できなかった場合に応答するメッセージ。com.accenture.acts.component:requester-identifierにて利用している。
+      key: acts.error.component.requestIdentifier.InvalidDeviceId
+      value:
+        ja: "端末IDの取得に失敗しました。"
+        en: "Failed to obtain device ID."
+    - description: IdTokenが取得できなかった場合に応答するメッセージ。com.accenture.acts.component:requester-identifierにて利用している。
+      key: acts.error.component.requestIdentifier.InvalidIdToken
+      value:
+        ja: "認証情報の取得に失敗しました。"
+        en: "Failed to retrieve authentication information."

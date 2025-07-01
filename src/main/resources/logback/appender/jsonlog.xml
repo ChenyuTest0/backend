@@ -1,0 +1,11 @@
+<included>
+  <!-- log stash -->
+  <appender name="jsonlog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${logFileJsonPath}${logFileJsonExtension}</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${logFileJsonPath}_%d{yyyy-MM-dd}${logFileJsonExtension}</fileNamePattern>
+      <maxHistory>${logFileJsonMaxHistory}</maxHistory>
+    </rollingPolicy>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+  </appender>
+</included>

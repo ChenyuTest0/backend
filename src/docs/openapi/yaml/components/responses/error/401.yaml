@@ -1,0 +1,38 @@
+description: |
+  認証情報が正しく読み取れなかった場合のレスポンス
+content:
+  application/json:
+    schema:
+      title: AuthFailureResponse
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: "エラーを表す文字列。VALIDATION_FAILUREで固定。"
+          example: VALIDATION_FAILURE
+        fields:
+          type: array
+          nullable: true
+          description: "単項目エラー発生時用のフィールドだが、401の場合は発生しないため常にNullとなる"
+          example: []
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: "エラーが発生した項目の名称"
+              message:
+                type: string
+                description: "エラーメッセージ"
+        global:
+          type: array
+          description: "特定の項目に紐づかないバリデーションエラーのメッセージを保持する。"
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                description: "エラーメッセージ"
+                example: 認証に失敗しました。
