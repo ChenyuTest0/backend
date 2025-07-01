@@ -15,7 +15,7 @@ jobs:
     steps:
       # 現在のリポジトリをチェックアウト
       - name: Checkout current repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # `actions/common/load-config/action.yaml` のアクションを実行
       - name: Run the action from commonActions repo
