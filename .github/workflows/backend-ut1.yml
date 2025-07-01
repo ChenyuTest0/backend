@@ -20,7 +20,7 @@ jobs:
       # `actions/common/load-config/action.yaml` のアクションを実行
       - name: Run the action from commonActions repo
         id: load-config
-        uses: ChenyuTest0/commonActions/.github/actions/common/load-config@main
+        uses: ChenyuTest0/commonActions/.github/actions/common/load-config@master
         with:
           config_file: .github/actions/config/tst-config.yaml
 
@@ -34,7 +34,7 @@ jobs:
 
       # - name: Run the get-aws-ps-param from commonActions repo
       #   id: get-aws-ps-param
-      #   uses: ChenyuTest0/commonActions/.github/actions/common/get-aws-ps-param@main
+      #   uses: ChenyuTest0/commonActions/.github/actions/common/get-aws-ps-param@master
       #   with:
       #     input_json: ${{ toJson(fromJson(steps.load-config.outputs.github_output).parameter_store) }}
 
@@ -46,7 +46,7 @@ jobs:
 
       - name: Run backend setup
         id: init-backend
-        uses: ChenyuTest0/commonActions/.github/actions/common/init-backend@main
+        uses: ChenyuTest0/commonActions/.github/actions/common/init-backend@master
         with:
           jdk: ${{ fromJson(steps.load-config.outputs.github_output).jdk }}
           gradle: ${{ fromJson(steps.load-config.outputs.github_output).gradle }}
