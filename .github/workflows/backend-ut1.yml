@@ -51,9 +51,10 @@ jobs:
           jdk: ${{ fromJson(steps.load-config.outputs.github_output).jdk }}
           gradle: ${{ fromJson(steps.load-config.outputs.github_output).gradle }}
 
+
       - name: Resolve Gradle dependencies
         if: steps.gradle-cache.outputs.cache-hit != 'true'
         shell: bash
         run: |
           echo "Gradle cache not found. Resolving dependencies..."
-          ./gradlew build --dry-run
+          chmod +x gradlew && ./gradlew clean build --refresh-dependencies
